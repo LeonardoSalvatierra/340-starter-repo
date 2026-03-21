@@ -1,8 +1,8 @@
 CREATE TYPE public.account_type AS ENUM
-    ('Clien', 'Employee', 'Admin');
+    ('Client', 'Employee', 'Admin');
 
 ALTER TYPE public.account_type
-    OWNER TO cse340;
+    OWNER TO cse340db_gfaw_user;
 
 --table structure for table 'classification'
 CREATE TABLE public.classification (
@@ -234,7 +234,7 @@ VALUES   (
 
 
 UPDATE inventory
-SET inv_description = REPLACE(inv_description, 'small interiors', 'a huge interior')
+SET inv_description = REPLACE(inv_description, ' small interiors', 'a huge interior')
 WHERE inv_make = 'GM' AND inv_model = 'Hummer';
 
 UPDATE inventory
