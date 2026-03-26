@@ -25,7 +25,6 @@ if (process.env.NODE_ENV == "development") {
   }
 
 } else {
-  // 🔥 SOLO ESTE CAMBIO IMPORTA
   pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
