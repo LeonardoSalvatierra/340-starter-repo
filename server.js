@@ -31,6 +31,32 @@ app.get("/", baseController.buildHome)
 // Inventory routes
 app.use("/inv", inventoryRoute)
 
+app.get("/error", (req, res, next) => {
+  throw new Error("This is a test error")
+})
+
+/* ***********************
+ * 404 Handler
+ *************************/
+app.use((req, res, next) => {
+  res.status(404).render("errors/error", {
+    title: "404 Not Found",
+    message: "Sorry, the page you are looking for does not exist."
+  })
+})
+
+/* ***********************
+ * Error Handler
+ *************************/
+app.use((err, req, res, next) => {
+  console.error(err.stack)
+  res.status(500).render("errors/error", {
+    title: "Server Error",
+    message: err.message,
+    nav: '' // agregamos nav vacío para que navigation.ejs no falle
+  })
+})
+
 /* ***********************
  * Local Server Information
  * Values from .env (environment) file
