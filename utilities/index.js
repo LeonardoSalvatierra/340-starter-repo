@@ -32,7 +32,6 @@ Util.getNav = async function (req, res, next) {
 Util.handleErrors = fn => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next)
 
-module.exports = Util
 
 /* **************************************
 * Build the classification view HTML
@@ -66,3 +65,32 @@ Util.buildClassificationGrid = async function(data){
   }
   return grid
 }
+
+/* **************************************
+ * Build vehicle detail HTML
+ * ************************************ */
+Util.buildVehicleDetail = async function(data) {
+  let detail = ""
+
+  if (data) {
+    detail = `
+      <div class="vehicle-detail">
+        <img src="${data.inv_image}" alt="${data.inv_make} ${data.inv_model}">
+        
+        <div class="vehicle-info">
+          <h2>${data.inv_make} ${data.inv_model}</h2>
+          <div class="car-info">
+            <p><strong>Year:</strong> ${data.inv_year}</p>
+            <p><strong>Price:</strong> $${new Intl.NumberFormat('en-US').format(data.inv_price)}</p>
+            <p><strong>Mileage:</strong> ${new Intl.NumberFormat('en-US').format(data.inv_miles)}</p>
+          </div>
+          <p class="car-description">${data.inv_description}</p>
+        </div>
+      </div>
+    `
+  }
+
+  return detail
+}
+
+module.exports = Util

@@ -32,9 +32,10 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 // Inventory routes
 app.use("/inv", inventoryRoute)
 
-app.get("/error", (req, res, next) => {
-  throw new Error("This is a test error")
-})
+app.get("/error", utilities.handleErrors((req, res, next) => {
+    throw new Error("This is a test error")
+  })
+)
 
 /* ***********************
  * 404 Handler
