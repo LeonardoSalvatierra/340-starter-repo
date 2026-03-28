@@ -194,9 +194,11 @@ nav ul li a:hover {
 #inv-display li:hover {
   border: 5px solid #60c3d4;
   background: rgb(255, 255, 255);
-  .namePrice h2 a, .namePrice span {
+}
+
+#inv-display li:hover .namePrice h2 a,
+#inv-display li:hover .namePrice span {
   color: #333;
-  }
 }
 
 #inv-display img {
@@ -226,6 +228,7 @@ nav ul li a:hover {
 
 .vehicle-detail img {
   width: 100%;
+  box-shadow: 0 0 1rem rgb(1, 238, 255);
 }
 
 .vehicle-info {
