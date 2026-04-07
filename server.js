@@ -6,6 +6,7 @@
 /* ***********************
  * Require Statements
  *************************/
+const bodyParser = require("body-parser")
 const express = require("express")
 const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
@@ -38,6 +39,9 @@ app.use(function(req, res, next){
   res.locals.messages = require('express-messages')(req, res)
   next()
 })
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 /* ***********************
  *  View Engine and Templates
