@@ -2,28 +2,53 @@
 
 <%- messages() %>
 
-<form action="/account/register" method="post">
-    <label>First Name</label>
-    <input type="text" name="account_firstname" required>
+<% if (errors) { %>
+  <ul class="notice">
+    <% errors.array().forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
 
-    <label>Last Name</label>
-    <input type="text" name="account_lastname" required>
+<form action="/account/register" method="post" novalidate>
 
-    <label>Email</label>
-    <input type="email" name="account_email" required placeholder="Enter a valid email">
+  <label>First Name</label>
+  <input 
+    type="text" 
+    name="account_firstname" 
+    required 
+    value="<%= locals.account_firstname %>"
+  >
 
-    <label for="accountPassword">Password:</label>
-    <span>
-        Passwords must be at least 12 characters and contain:
-        1 number, 1 uppercase letter, and 1 special character
-    </span>
-    <input 
-        type="password" 
-        name="account_password" 
-        id="accountPassword" 
-        required 
-        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
-    >
+  <label>Last Name</label>
+  <input 
+    type="text" 
+    name="account_lastname" 
+    required 
+    value="<%= locals.account_lastname %>"
+  >
+
+  <label>Email</label>
+  <input 
+    type="email" 
+    name="account_email" 
+    required 
+    value="<%= locals.account_email %>"
+  >
+
+  <label for="accountPassword">Password:</label>
+  <span>
+    Passwords must be at least 12 characters and contain:
+    1 number, 1 uppercase letter, and 1 special character
+  </span>
+
+  <input 
+    type="password" 
+    name="account_password" 
+    id="accountPassword" 
+    required 
+    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+  >
 
   <button type="submit">Register</button>
 </form>
