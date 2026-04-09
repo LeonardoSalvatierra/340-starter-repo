@@ -11,12 +11,13 @@
 <% } %>
 
 <form action="/inv/add-classification" method="post" novalidate>
-  <label>Classification Name</label>
+  <label for="classification_name">Classification Name</label>
   <input
     type="text"
     name="classification_name"
+    id="classification_name"
+    value="<%= classification_name ? classification_name : '' %>"
     required
-    value="<%= classification_name %>"
   >
   <button type="submit">Add Classification</button>
 </form>

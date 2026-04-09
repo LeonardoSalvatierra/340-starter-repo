@@ -2,7 +2,7 @@ const express = require("express")
 const router = new express.Router()
 const invController = require("../controllers/invController")
 const utilities = require("../utilities/")
-const inventoryValidation = require("../utilities/inventory-validation") // IMPORT CORRECTO
+const inventoryValidation = require("../utilities/inventory-validation") 
 
 // Management view
 router.get("/", utilities.handleErrors(invController.buildManagementView))

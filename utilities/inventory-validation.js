@@ -1,4 +1,4 @@
-const { body, validationResult } = require("express-validator")
+const { body } = require("express-validator")
 const invModel = require("../models/inventory-model")
 
 const validate = {}
@@ -13,7 +13,14 @@ validate.addClassificationRules = () => {
       .withMessage("Classification name must be at least 2 characters.")
       .custom(async (classification_name) => {
         const existing = await invModel.getClassifications()
-        if (existing.find(c => c.classification_name.toLowerCase() === classification_name.toLowerCase())) {
+
+        if (
+          existing.rows.find(
+            c =>
+              c.classification_name.toLowerCase() ===
+              classification_name.toLowerCase()
+          )
+        ) {
           throw new Error("Classification already exists.")
         }
       }),

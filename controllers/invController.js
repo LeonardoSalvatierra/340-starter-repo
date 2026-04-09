@@ -83,14 +83,13 @@ invCont.addClassification = async function (req, res, next) {
   try {
     const { classification_name } = req.body
     const nav = await utilities.getNav()
-    const { validationResult } = require("express-validator")
-    const errors = validationResult(req)
+    const errors = validationResult(req)  // <--- NO volver a require
 
     if (!errors.isEmpty()) {
       return res.render("inventory/add-classification", {
         title: "Add New Classification",
         nav,
-        errors,
+        errors: errors.array(),  // <-- pasamos el arreglo directamente
         classification_name,
       })
     }
