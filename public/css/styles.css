@@ -263,6 +263,54 @@ nav ul li a:hover {
   padding: 1rem;
 }
 
+/*Inventory Management*/
+
+.management {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.management ul {
+  margin: 0;
+  padding: 1rem; 
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  align-items: center;           
+  gap: 15px; 
+  width: 100%;
+  box-sizing: border-box; 
+}
+
+.management li {
+  margin: 0; 
+  border-radius: 10px;
+  background: #04bad28e;
+  box-shadow: 0.3rem 0.4rem 0.5rem rgba(61, 61, 61, 0.628);
+  padding: 0.8rem;
+  list-style-type: none;
+  text-align: center;
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+}
+
+.management li a {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  color: black;
+  word-break: break-word; 
+}
+
+.management li:hover {
+  background:#0540488e;
+}
+
+.management li:hover a {
+  color: white;
+}
+
 /*Desktop view*/
 
 @media (min-width: 48rem) {

@@ -37,6 +37,13 @@ router.get(
   utilities.handleErrors(invController.buildAddInventoryForm)
 )
 
+// Add Inventory (POST)
+router.post(
+  "/add-inventory",
+  inventoryValidation.addInventoryRules(),
+  utilities.handleErrors(invController.addInventory)
+)
+
 // Trigger intentional error
 router.get("/trigger-error", utilities.handleErrors(invController.triggerError))
 

@@ -125,4 +125,68 @@ invCont.buildAddInventoryForm = async function (req, res, next) {
   }
 }
 
+/* Process Add Inventory */
+invCont.addInventory = async function (req, res, next) {
+  try {
+    const nav = await utilities.getNav()
+    const errors = validationResult(req)
+
+    const {
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id,
+    } = req.body
+
+    // Si hay errores → vuelve al form
+    if (!errors.isEmpty()) {
+      const classificationList = await utilities.buildClassificationList(classification_id)
+
+      return res.render("inventory/add-inventory", {
+        title: "Add New Vehicle",
+        nav,
+        errors: errors.array(),
+        classificationList,
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id,
+      })
+    }
+
+    // Insertar en DB
+    await invModel.addInventory({
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id,
+    })
+
+    // Mensaje + redirect
+    req.flash("success", "Vehicle added successfully!")
+    res.redirect("/inv")
+
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = invCont
