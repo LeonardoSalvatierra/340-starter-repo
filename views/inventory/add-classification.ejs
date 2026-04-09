@@ -1,0 +1,22 @@
+<h1><%= title %></h1>
+
+<%- messages() %>
+
+<% if (errors && errors.length) { %>
+  <ul class="notice">
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<form action="/inv/add-classification" method="post" novalidate>
+  <label>Classification Name</label>
+  <input
+    type="text"
+    name="classification_name"
+    required
+    value="<%= classification_name %>"
+  >
+  <button type="submit">Add Classification</button>
+</form>
