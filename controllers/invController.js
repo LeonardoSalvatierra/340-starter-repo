@@ -106,4 +106,23 @@ invCont.addClassification = async function (req, res, next) {
   }
 }
 
+/* ***********************
+ * Show Add Inventory Form
+ ************************/
+invCont.buildAddInventoryForm = async function (req, res, next) {
+  try {
+    const nav = await utilities.getNav()
+    const classificationList = await utilities.buildClassificationList()
+
+    res.render("inventory/add-inventory", {
+      title: "Add New Vehicle",
+      nav,
+      classificationList,
+      errors: [],
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = invCont

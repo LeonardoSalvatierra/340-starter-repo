@@ -1,0 +1,47 @@
+<h1><%= title %></h1>
+
+<%- messages() %>
+
+<% if (errors && errors.length) { %>
+  <ul class="notice">
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<form action="/inv/add-inventory" method="post" novalidate>
+
+  <label>Make</label>
+  <input type="text" name="inv_make" required value="<%= locals.inv_make || '' %>">
+
+  <label>Model</label>
+  <input type="text" name="inv_model" required value="<%= locals.inv_model || '' %>">
+
+  <label>Year</label>
+  <input type="number" name="inv_year" required value="<%= locals.inv_year || '' %>">
+
+  <label>Description</label>
+  <textarea name="inv_description" required><%= locals.inv_description || '' %></textarea>
+
+  <label>Image Path</label>
+  <input type="text" name="inv_image" required value="<%= locals.inv_image || '/images/vehicles/no-image.png' %>">
+
+  <label>Thumbnail Path</label>
+  <input type="text" name="inv_thumbnail" required value="<%= locals.inv_thumbnail || '/images/vehicles/no-image-tn.png' %>">
+
+  <label>Price</label>
+  <input type="number" name="inv_price" required value="<%= locals.inv_price || '' %>">
+
+  <label>Miles</label>
+  <input type="number" name="inv_miles" required value="<%= locals.inv_miles || '' %>">
+
+  <label>Color</label>
+  <input type="text" name="inv_color" required value="<%= locals.inv_color || '' %>">
+
+  <label>Classification</label>
+  <%- classificationList %>
+
+  <button type="submit">Add Vehicle</button>
+
+</form>
