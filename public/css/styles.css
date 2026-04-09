@@ -311,6 +311,120 @@ nav ul li a:hover {
   color: white;
 }
 
+/* Add classification */
+.add-classification h1 {
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.add-classification .notice {
+  list-style: none;
+  margin: 1rem; 
+  padding: 1rem;
+  background: #f8d7da;
+  border-left: 5px solid #dc3545;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.add-classification form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin: 1rem; 
+  padding: 1.5rem;
+  background: #04bad28e;
+  border-radius: 15px;
+  box-shadow: 0.3rem 0.4rem 0.5rem rgba(61, 61, 61, 0.3);
+  box-sizing: border-box; 
+}
+
+.add-classification label {
+  font-weight: bold;
+  margin-bottom: -0.5rem;
+  text-align: center;
+}
+
+.add-classification input[type="text"] {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box; 
+}
+
+.add-classification button {
+  background: #054048;
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+}
+
+.add-classification button:hover {
+  background: #042c31;
+}
+
+/*New vehicle*/
+
+.add-inventory {
+  padding: 10px;
+  max-width: 100%;
+}
+
+.add-inventory h1 { text-align: center; }
+
+/* Estilo del Formulario */
+.add-inventory form {
+  background: #04bad28e;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0.3rem 0.4rem 0.5rem rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-sizing: border-box;
+}
+
+/* Estilo de los Inputs, Textarea y Select */
+.add-inventory input, 
+.add-inventory textarea, 
+.add-inventory select {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.add-inventory label {
+  font-weight: bold;
+  margin-top: 5px;
+  display: block;
+}
+
+/* Los contenedores nuevos en móvil siguen en columna */
+.make-model-year, 
+.price-miles-color {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.add-inventory button {
+  background: #054048;
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
 /*Desktop view*/
 
 @media (min-width: 48rem) {
@@ -419,6 +533,60 @@ nav ul li a:hover {
 
   .car-description{
     font-size: 1.2rem;
+  }
+
+  /*Add classification*/
+
+  .add-classification form, .notice {
+    max-width: 500px; /* Limitamos el ancho en PC */
+    margin: 2rem auto; /* Centra el bloque horizontalmente */
+  }
+
+  .add-classification h1 {
+    margin-top: 3rem;
+  }
+
+  .add-classification button {
+    transition: all 0.3s ease;
+  }
+
+  .add-classification button:hover {
+    background: #032b31;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  /*Add inventory*/
+
+  .add-inventory form {
+    max-width: 700px;
+    margin: 2rem auto;
+  }
+
+  /* Magia para los grupos de 3 campos */
+  .make-model-year, 
+  .price-miles-color {
+    display: grid;
+    /* Creamos 3 columnas iguales */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 15px;
+  }
+
+  /* Ajuste para los labels dentro de estos grupos */
+  .make-model-year label, 
+  .price-miles-color label {
+    grid-row: 1; /* Todos los labels a la fila 1 */
+  }
+
+  .make-model-year input, 
+  .price-miles-color input {
+    grid-row: 2; /* Todos los inputs a la fila 2 */
+  }
+
+  .add-inventory button:hover {
+    background: #032b31;
+    transform: translateY(-2px);
+    transition: 0.3s;
   }
 
 }
