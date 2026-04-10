@@ -1,0 +1,31 @@
+<div class="add-inventory">
+    <h1><%= title %></h1>
+    <%- messages() %>
+
+    <p>Confirm Deletion - The delete is permanent.</p>
+
+    <form action="/inv/delete" method="post" novalidate>
+
+        <input type="hidden" name="inv_id"
+        <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+        <% } %>>
+
+        <div class="make-model-year">
+            <label for="inv_make">Make</label>
+            <input type="text" name="inv_make" id="inv_make" readonly value="<%= inv_make %>">
+
+            <label for="inv_model">Model</label>
+            <input type="text" name="inv_model" id="inv_model" readonly value="<%= inv_model %>">
+
+            <label for="inv_year">Year</label>
+            <input type="number" name="inv_year" id="inv_year" readonly value="<%= inv_year %>">
+        </div>
+
+        <div class="price-miles-color">
+            <label for="inv_price">Price</label>
+            <input type="number" name="inv_price" id="inv_price" readonly value="<%= inv_price %>">
+        </div>
+
+        <button type="submit">Delete Vehicle</button>
+    </form>
+</div>

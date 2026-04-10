@@ -86,4 +86,20 @@ router.post(
   utilities.handleErrors(invController.updateInventory)
 )
 
+// Delete Confirmation View (GET)
+router.get(
+  "/delete/:inv_id",
+  utilities.requireLogin,
+  utilities.requireEmployeeOrAdmin,
+  utilities.handleErrors(invController.deleteConfirmView)
+)
+
+// Delete Inventory (POST)
+router.post(
+  "/delete",
+  utilities.requireLogin,
+  utilities.requireEmployeeOrAdmin,
+  utilities.handleErrors(invController.deleteInventory)
+)
+
 module.exports = router
