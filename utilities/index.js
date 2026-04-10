@@ -124,16 +124,56 @@ Util.checkJWTToken = (req, res, next) => {
   if (req.cookies.jwt) {
     try {
       const decoded = jwt.verify(req.cookies.jwt, process.env.SESSION_SECRET)
+      
       res.locals.accountData = decoded
+      res.locals.loggedin = true   
+
     } catch (error) {
       res.locals.accountData = null
+      res.locals.loggedin = false  
     }
   } else {
     res.locals.accountData = null
+    res.locals.loggedin = false    
   }
   next()
 }
 
+Util.requireLogin = (req, res, next) => {
+  if (!res.locals.accountData) {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+  next()
+}
 
+Util.requireEmployeeOrAdmin = (req, res, next) => {
+  if (
+    res.locals.accountData &&
+    (res.locals.accountData.account_type === "Employee" ||
+     res.locals.accountData.account_type === "Admin")
+  ) {
+    return next()
+  }
+
+  req.flash("notice", "You do not have access to this area.")
+  return res.redirect("/account/")
+}
+
+/* ****************************************
+ *  Check Employee or Admin
+ * ************************************ */
+Util.checkEmployeeOrAdmin = (req, res, next) => {
+  if (
+    res.locals.loggedin &&
+    (res.locals.accountData.account_type === "Employee" ||
+     res.locals.accountData.account_type === "Admin")
+  ) {
+    next()
+  } else {
+    req.flash("notice", "You do not have access to this area.")
+    return res.redirect("/account/")
+  }
+}
 
 module.exports = Util

@@ -7,12 +7,16 @@ const jwt = require("jsonwebtoken")
 *  Deliver login view
 * *************************************** */
 async function buildLogin(req, res, next) {
+  if (res.locals.loggedin) {
+    return res.redirect("/account/")
+  }
+
   let nav = await utilities.getNav()
   res.render("account/login", {
-        title: "Login",
-        nav,
-        errors: null,
-    })
+    title: "Login",
+    nav,
+    errors: null,
+  })
 }
 /* ****************************************
 *  Deliver registration view
@@ -110,7 +114,7 @@ async function accountLogin(req, res) {
       res.cookie("jwt", token, { httpOnly: true })
 
       req.flash("notice", `Welcome back ${accountData.account_firstname}`)
-      return res.redirect("/")
+      return res.redirect("/account/")
 
     } else {
       req.flash("notice", "Invalid email or password.")
@@ -127,4 +131,20 @@ async function accountLogin(req, res) {
   }
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin }
+async function logoutAccount(req, res) {
+  res.clearCookie("jwt")
+  req.flash("notice", "You have been logged out.")
+  return res.redirect("/account/")
+}
+
+async function buildManagement(req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("account/index", {
+    title: "My Account",
+    nav,
+    accountData: res.locals.accountData, 
+    errors: null,
+  })
+}
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, logoutAccount, buildManagement }

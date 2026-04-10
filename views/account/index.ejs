@@ -1,0 +1,41 @@
+<h1><%= title %></h1>
+
+<%- messages() %>
+
+<% if (accountData) { %>
+
+  <h2>Welcome to your account</h2>
+
+  <p><strong>Email:</strong> <%= accountData.account_email %></p>
+  <p><strong>Account Type:</strong> <%= accountData.account_type %></p>
+
+  <br>
+
+  <h3>Account Options</h3>
+
+  <ul>
+    <li>
+      <a href="/account/logout">Logout</a>
+    </li>
+  </ul>
+
+  <% if (accountData.account_type === "Admin" || accountData.account_type === "Employee") { %>
+    
+    <h3>Management</h3>
+    <ul>
+      <li>
+        <a href="/inv/">Manage Inventory</a>
+      </li>
+    </ul>
+
+  <% } %>
+
+<% } else { %>
+
+  <h2>You are not logged in</h2>
+
+  <a href="/account/login">
+    <button>Login</button>
+  </a>
+
+<% } %>

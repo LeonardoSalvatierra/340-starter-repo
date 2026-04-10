@@ -45,6 +45,12 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(cookieParser())
+
+app.use((req, res, next) => {
+  res.locals.loggedin = false
+  next()
+})
+
 app.use(utilities.checkJWTToken)
 
 /* ***********************

@@ -10,25 +10,34 @@
   </ul>
 <% } %>
 
-<form action="/account/login" method="post" novalidate>
+<% if (accountData) { %>
 
-  <label>Email</label>
-  <input 
-    type="email" 
-    name="account_email" 
-    required
-    value="<%= locals.account_email %>"
-  >
+  <h2>You are already logged in</h2>
+  <a href="/account/logout">Logout</a>
 
-  <label>Password</label>
-  <input 
-    type="password" 
-    name="account_password" 
-    required
-  >
+<% } else { %>
 
-  <button type="submit">Login</button>
-</form>
+  <form action="/account/login" method="post" novalidate>
+
+    <label>Email</label>
+    <input 
+      type="email" 
+      name="account_email" 
+      required
+      value="<%= locals.account_email %>"
+    >
+
+    <label>Password</label>
+    <input 
+      type="password" 
+      name="account_password" 
+      required
+    >
+
+    <button type="submit">Login</button>
+  </form>
+
+<% } %>
 
 <p>
   Don't have an account?
