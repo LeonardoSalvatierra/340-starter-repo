@@ -1,41 +1,24 @@
-<h1><%= title %></h1>
 
-<%- messages() %>
+<div class="account-page">
+    <h1><%= title %></h1>
 
-<% if (accountData) { %>
+    <%- messages() %>
 
-  <h2>Welcome to your account</h2>
+    <% if (locals.accountData) { %>
 
-  <p><strong>Email:</strong> <%= accountData.account_email %></p>
-  <p><strong>Account Type:</strong> <%= accountData.account_type %></p>
+    <h2>Welcome <%= accountData.account_firstname %></h2>
 
-  <br>
+    <p><a href="/account/update/<%= accountData.account_id %>">Update Account Information</a></p>
 
-  <h3>Account Options</h3>
+    <% if (accountData.account_type === "Employee" || accountData.account_type === "Admin") { %>
+        <h3>Inventory Management</h3>
+        <p><a href="/inv/">Manage Inventory</a></p>
+    <% } %>
 
-  <ul>
-    <li>
-      <a href="/account/logout">Logout</a>
-    </li>
-  </ul>
+    <% } else { %>
 
-  <% if (accountData.account_type === "Admin" || accountData.account_type === "Employee") { %>
-    
-    <h3>Management</h3>
-    <ul>
-      <li>
-        <a href="/inv/">Manage Inventory</a>
-      </li>
-    </ul>
+    <h2>You are not logged in</h2>
+    <a href="/account/login"><button>Login</button></a>
 
-  <% } %>
-
-<% } else { %>
-
-  <h2>You are not logged in</h2>
-
-  <a href="/account/login">
-    <button>Login</button>
-  </a>
-
-<% } %>
+    <% } %>
+</div>

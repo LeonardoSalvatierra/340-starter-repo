@@ -105,6 +105,7 @@ async function accountLogin(req, res) {
         {
           account_id: accountData.account_id,
           account_email: accountData.account_email,
+          account_firstname: accountData.account_firstname,
           account_type: accountData.account_type,
         },
         process.env.SESSION_SECRET,
@@ -147,4 +148,80 @@ async function buildManagement(req, res, next) {
   })
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, logoutAccount, buildManagement }
+async function buildUpdateView(req, res, next) {
+  try {
+    const account_id = parseInt(req.params.account_id)
+    let nav = await utilities.getNav()
+    const accountData = await accountModel.getAccountById(account_id)
+    res.render("account/update", {
+      title: "Update Account",
+      nav,
+      errors: null,
+      account_id: accountData.account_id,
+      account_firstname: accountData.account_firstname,
+      account_lastname: accountData.account_lastname,
+      account_email: accountData.account_email,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function updateAccount(req, res, next) {
+  try {
+    const { account_id, account_firstname, account_lastname, account_email } = req.body
+    const updateResult = await accountModel.updateAccount(
+      account_firstname, account_lastname, account_email, account_id
+    )
+    if (updateResult) {
+      // Actualizar el JWT con los nuevos datos
+      const token = jwt.sign(
+        {
+          account_id: updateResult.account_id,
+          account_email: updateResult.account_email,
+          account_firstname: updateResult.account_firstname,
+          account_type: updateResult.account_type,
+        },
+        process.env.SESSION_SECRET,
+        { expiresIn: "1h" }
+      )
+      res.cookie("jwt", token, { httpOnly: true })
+      req.flash("notice", "Account updated successfully.")
+      return res.redirect("/account/")
+    } else {
+      req.flash("notice", "Account update failed.")
+      return res.redirect(`/account/update/${account_id}`)
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+async function updatePassword(req, res, next) {
+  try {
+    const { account_id, account_password } = req.body
+    const hashedPassword = await bcrypt.hash(account_password, 10)
+    const updateResult = await accountModel.updatePassword(hashedPassword, account_id)
+    if (updateResult) {
+      req.flash("notice", "Password updated successfully.")
+      return res.redirect("/account/")
+    } else {
+      req.flash("notice", "Password update failed.")
+      return res.redirect(`/account/update/${account_id}`)
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = {
+  buildLogin,
+  buildRegister,
+  registerAccount,
+  accountLogin,
+  logoutAccount,
+  buildManagement,
+  buildUpdateView,
+  updateAccount,
+  updatePassword,
+}
