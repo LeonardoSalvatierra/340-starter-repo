@@ -81,7 +81,6 @@ async function accountLogin(req, res) {
 
   const { account_email, account_password } = req.body
 
-  // Buscar usuario
   const accountData = await accountModel.getAccountByEmail(account_email)
 
   if (!accountData) {
@@ -95,10 +94,10 @@ async function accountLogin(req, res) {
   }
 
   try {
-    // Comparar password
+    // Comper password
     if (await bcrypt.compare(account_password, accountData.account_password)) {
 
-      // ✅ LOGIN OK (después agregamos session)
+      // LOGIN 
       req.flash("notice", `Welcome back ${accountData.account_firstname}`)
       return res.redirect("/")
 

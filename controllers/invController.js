@@ -60,7 +60,7 @@ invCont.buildManagementView = async function (req, res, next) {
 }
 
 /* ***********************
- * NUEVO: Add Classification
+ * Add Classification
  ************************/
 
 /* Show Add Classification Form */
@@ -83,13 +83,13 @@ invCont.addClassification = async function (req, res, next) {
   try {
     const { classification_name } = req.body
     const nav = await utilities.getNav()
-    const errors = validationResult(req)  // <--- NO volver a require
+    const errors = validationResult(req)  
 
     if (!errors.isEmpty()) {
       return res.render("inventory/add-classification", {
         title: "Add New Classification",
         nav,
-        errors: errors.array(),  // <-- pasamos el arreglo directamente
+        errors: errors.array(),  
         classification_name,
       })
     }
@@ -144,7 +144,6 @@ invCont.addInventory = async function (req, res, next) {
       classification_id,
     } = req.body
 
-    // Si hay errores → vuelve al form
     if (!errors.isEmpty()) {
       const classificationList = await utilities.buildClassificationList(classification_id)
 
@@ -166,7 +165,6 @@ invCont.addInventory = async function (req, res, next) {
       })
     }
 
-    // Insertar en DB
     await invModel.addInventory({
       inv_make,
       inv_model,
@@ -180,7 +178,6 @@ invCont.addInventory = async function (req, res, next) {
       classification_id,
     })
 
-    // Mensaje + redirect
     req.flash("success", "Vehicle added successfully!")
     res.redirect("/inv")
 
