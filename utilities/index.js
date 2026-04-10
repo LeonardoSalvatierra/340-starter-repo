@@ -118,4 +118,22 @@ Util.buildClassificationList = async function (classification_id = null) {
   return classificationList
 }
 
+const jwt = require("jsonwebtoken")
+
+Util.checkJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+    try {
+      const decoded = jwt.verify(req.cookies.jwt, process.env.SESSION_SECRET)
+      res.locals.accountData = decoded
+    } catch (error) {
+      res.locals.accountData = null
+    }
+  } else {
+    res.locals.accountData = null
+  }
+  next()
+}
+
+
+
 module.exports = Util

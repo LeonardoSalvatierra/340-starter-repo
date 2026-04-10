@@ -1,6 +1,7 @@
 const utilities = require("../utilities/")
 const accountModel = require("../models/account-model")
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 
 /* ****************************************
 *  Deliver login view
@@ -94,10 +95,20 @@ async function accountLogin(req, res) {
   }
 
   try {
-    // Comper password
     if (await bcrypt.compare(account_password, accountData.account_password)) {
 
-      // LOGIN 
+      const token = jwt.sign(
+        {
+          account_id: accountData.account_id,
+          account_email: accountData.account_email,
+          account_type: accountData.account_type,
+        },
+        process.env.SESSION_SECRET,
+        { expiresIn: "1h" }
+      )
+
+      res.cookie("jwt", token, { httpOnly: true })
+
       req.flash("notice", `Welcome back ${accountData.account_firstname}`)
       return res.redirect("/")
 
