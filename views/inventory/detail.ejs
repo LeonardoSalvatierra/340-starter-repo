@@ -1,6 +1,91 @@
-
 <h1><%= title %></h1>
 
 <div>
   <%- detail %>
 </div>
+
+<div class="reviews-section">
+
+  <% if (reviews && reviews.length > 0) { %>
+    <div class="carousel-container">
+      <div class="carousel-track">
+        <% reviews.forEach(function(review) { %>
+          <div class="review-card">
+            <div class="review-stars">
+              <% for(let i = 1; i <= 5; i++) { %>
+                <span class="star <%= i <= review.review_rating ? 'filled' : '' %>">★</span>
+              <% } %>
+            </div>
+            <p class="review-text">"<%= review.review_text %>"</p>
+            <p class="review-author">— <%= review.account_firstname %> <%= review.account_lastname %></p>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  <% } else { %>
+    <p class="no-reviews">No reviews yet. Be the first to leave one!</p>
+  <% } %>
+
+  <% if (locals.loggedin) { %>
+    <div class="review-form">
+      <h3>Leave a Review</h3>
+      <%- messages() %>
+      <form action="/inv/review" method="post" novalidate>
+        <input type="hidden" name="inv_id" value="<%= inv_id %>">
+
+        <label for="review_rating">Rating</label>
+        <div class="star-select">
+          <% for(let i = 1; i <= 5; i++) { %>
+            <input type="radio" name="review_rating" id="star<%= i %>" value="<%= i %>" required>
+            <label for="star<%= i %>" class="star-label">★</label>
+          <% } %>
+        </div>
+
+        <label for="review_text">Your Review</label>
+        <textarea name="review_text" id="review_text" rows="4" required placeholder="Write your review here..."></textarea>
+
+        <button type="submit">Submit Review</button>
+      </form>
+    </div>
+  <% } else { %>
+    <div class="review-login">
+      <p>Want to leave a review? <a href="/account/login">Log in here</a></p>
+    </div>
+  <% } %>
+
+</div>
+
+<script>
+  const track = document.querySelector(".carousel-track")
+  if (track && track.children.length > 1) {
+    let current = 0
+    const cards = track.children
+    let timer
+
+    function goTo(index) {
+      track.style.transition = "transform 0.6s ease"
+      track.style.transform = `translateX(-${index * 100}%)`
+      current = index
+    }
+
+    function next() {
+      const nextIndex = (current + 1) % cards.length
+      goTo(nextIndex)
+    }
+
+    function startTimer() {
+      timer = setInterval(next, 4000)
+    }
+
+    function stopTimer() {
+      clearInterval(timer)
+    }
+
+    track.addEventListener("mouseenter", stopTimer)
+    track.addEventListener("mouseleave", startTimer)
+    track.addEventListener("touchstart", stopTimer)
+    track.addEventListener("touchend", startTimer)
+
+    startTimer()
+  }
+</script>

@@ -223,7 +223,7 @@ nav ul li a:hover {
 .vehicle-detail {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0;
 }
 
 .vehicle-detail img {
@@ -235,32 +235,190 @@ nav ul li a:hover {
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  background: rgb(222, 222, 222);
 }
 
 .vehicle-info h2 {
   text-align: center;
-  font-size: 1.8rem;
-  margin-bottom: 0.6rem;
-  margin-top: 0.2rem;
+  font-size: 1.6rem;
+  margin: 0.5rem 0;
+  color: #054048;
 }
 
 .car-info {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  background:#0000008e;
+  justify-content: space-around;
+  background: #054048;
   color: white;
+  padding: 0.6rem;
+  border-radius: 8px;
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.car-info p {
   margin: 0;
-  padding-inline: 0.5rem;
 }
 
 .car-description {
-  margin: 1rem;
-  line-height: 1.4;
+  margin: 0.8rem 0 0 0;
+  line-height: 1.6;
   border-radius: 10px;
-  background:#04bad28e;
-  box-shadow: 0.3rem 0.4rem 0.5rem rgba(61, 61, 61, 0.628);
+  background: #04bad28e;
+  box-shadow: 0.3rem 0.4rem 0.5rem rgba(61, 61, 61, 0.4);
   padding: 1rem;
+  font-size: 0.95rem;
+}
+
+/* Reviews section */
+.reviews-section {
+  padding: 1rem;
+}
+
+.carousel-container {
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.carousel-track {
+  display: flex;
+  will-change: transform;
+}
+
+.review-card {
+  min-width: 100%;
+  background: #04bad28e;
+  border-radius: 12px;
+  padding: 1.2rem;
+  box-shadow: 0.3rem 0.4rem 0.5rem rgba(61, 61, 61, 0.3);
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.review-stars {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.star {
+  color: #ccc;
+}
+
+.star.filled {
+  color: #f5a623;
+}
+
+.review-text {
+  font-style: italic;
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.review-author {
+  font-weight: bold;
+  color: #054048;
+  margin: 0.5rem 0 0 0;
+}
+
+.no-reviews {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  margin: 1rem 0;
+}
+
+/* Review form */
+.review-form {
+  background: #f5f5f5;
+  border-radius: 12px;
+  padding: 1.2rem;
+  margin-top: 1rem;
+  box-shadow: 0.3rem 0.4rem 0.5rem rgba(61, 61, 61, 0.2);
+}
+
+.review-form h3 {
+  text-align: center;
+  color: #054048;
+  margin-top: 0;
+}
+
+.review-form label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.review-form textarea {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+.review-form button {
+  background: #054048;
+  color: white;
+  padding: 0.9rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.8rem;
+}
+
+.review-form button:hover {
+  background: #032b31;
+}
+
+/* Star rating selector */
+.star-select {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 0.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.star-select input[type="radio"] {
+  display: none;
+}
+
+.star-select .star-label {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.star-select input[type="radio"]:checked ~ .star-label,
+.star-select .star-label:hover,
+.star-select .star-label:hover ~ .star-label {
+  color: #f5a623;
+}
+
+/* Login prompt */
+.review-login {
+  text-align: center;
+  padding: 1rem;
+  background: #f5f5f5;
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.review-login a {
+  color: #054048;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.review-login a:hover {
+  text-decoration: underline;
 }
 
 /*Inventory Management*/
@@ -789,34 +947,49 @@ nav ul li a:hover {
   }
 
   /*Cars detail desktop*/
-
-   .vehicle-detail {
+  .vehicle-detail {
     display: grid;
-    grid-template-columns: 1fr 0.6fr;
-    align-items:center;
-    text-align: center;
-    background: rgb(222, 222, 222);
-    padding-bottom: 1.5rem;
-    padding-top: 1.5rem;
+    grid-template-columns: 1fr 0.7fr;
+    align-items: stretch;
   }
 
   .vehicle-detail img {
-    width: 100%;
-    border-radius: 15px;
-    margin-inline: 0.8rem;
-    box-shadow: 0 0 1rem rgb(1, 238, 255);
+    border-radius: 0;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 0 0 1.5rem rgb(1, 238, 255);
   }
 
   .vehicle-info {
-    width: 100%;
+    padding: 1.5rem;
+  }
+
+  .vehicle-info h2 {
+    font-size: 2rem;
   }
 
   .car-info {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
-  .car-description{
-    font-size: 1.2rem;
+  .car-description {
+    font-size: 1.1rem;
+  }
+
+  /* Reviews desktop */
+  .reviews-section {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+
+  .review-form textarea {
+    min-height: 100px;
+  }
+
+  .review-form button:hover {
+    transform: translateY(-2px);
+    transition: 0.3s;
   }
 
   /*Add classification*/
@@ -847,11 +1020,10 @@ nav ul li a:hover {
     margin: 2rem auto;
   }
 
-  /* Magia para los grupos de 3 campos */
+  /* los grupos de 3 campos */
   .make-model-year, 
   .price-miles-color {
     display: grid;
-    /* Creamos 3 columnas iguales */
     grid-template-columns: repeat(3, 1fr); 
     gap: 15px;
   }
@@ -859,12 +1031,12 @@ nav ul li a:hover {
   /* Ajuste para los labels dentro de estos grupos */
   .make-model-year label, 
   .price-miles-color label {
-    grid-row: 1; /* Todos los labels a la fila 1 */
+    grid-row: 1; 
   }
 
   .make-model-year input, 
   .price-miles-color input {
-    grid-row: 2; /* Todos los inputs a la fila 2 */
+    grid-row: 2; 
   }
 
   .add-inventory button:hover {

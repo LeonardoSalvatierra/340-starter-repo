@@ -26,16 +26,37 @@ invCont.buildByClassificationId = async function (req, res, next) {
 /* Build inventory detail view */
 invCont.buildByInventoryId = async function (req, res, next) {
   try {
-    const inv_id = req.params.inv_id
+    const inv_id = parseInt(req.params.inv_id)
     const data = await invModel.getInventoryById(inv_id)
     const detail = await utilities.buildVehicleDetail(data)
     const nav = await utilities.getNav()
+    const reviews = await invModel.getReviewsByInventoryId(inv_id)
 
     res.render("inventory/detail", {
       title: data.inv_make + " " + data.inv_model,
       nav,
       detail,
+      reviews,
+      inv_id,
+      errors: null,
     })
+  } catch (error) {
+    next(error)
+  }
+}
+
+/* ***************************
+ *  Add Review
+ * ************************** */
+invCont.addReview = async function (req, res, next) {
+  try {
+    const { review_text, review_rating, inv_id } = req.body
+    const account_id = res.locals.accountData.account_id
+
+    await invModel.addReview(review_text, review_rating, inv_id, account_id)
+
+    req.flash("notice", "Your review was submitted successfully!")
+    res.redirect(`/inv/detail/${inv_id}`)
   } catch (error) {
     next(error)
   }

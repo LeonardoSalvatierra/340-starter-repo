@@ -102,4 +102,11 @@ router.post(
   utilities.handleErrors(invController.deleteInventory)
 )
 
+// Add Review (POST)
+router.post(
+  "/review",
+  utilities.requireLogin,
+  utilities.handleErrors(invController.addReview)
+)
+
 module.exports = router
