@@ -139,6 +139,7 @@ async function getReviewsByInventoryId(inv_id) {
   try {
     const sql = `
       SELECT r.review_id, r.review_text, r.review_rating, r.review_date,
+             r.account_id,
              a.account_firstname, a.account_lastname
       FROM public.review AS r
       JOIN public.account AS a ON r.account_id = a.account_id
@@ -148,6 +149,19 @@ async function getReviewsByInventoryId(inv_id) {
     return data.rows
   } catch (error) {
     console.error("getReviewsByInventoryId error: " + error)
+  }
+}
+
+/* ***************************
+ *  Delete Review
+ * ************************** */
+async function deleteReview(review_id, account_id) {
+  try {
+    const sql = "DELETE FROM public.review WHERE review_id = $1 AND account_id = $2"
+    const data = await pool.query(sql, [review_id, account_id])
+    return data
+  } catch (error) {
+    console.error("deleteReview error: " + error)
   }
 }
 
@@ -161,4 +175,5 @@ module.exports = {
   deleteInventoryItem,
   addReview,
   getReviewsByInventoryId,
+  deleteReview,
 }

@@ -8,18 +8,29 @@
 
   <% if (reviews && reviews.length > 0) { %>
     <div class="carousel-container">
-      <div class="carousel-track">
-        <% reviews.forEach(function(review) { %>
-          <div class="review-card">
-            <div class="review-stars">
-              <% for(let i = 1; i <= 5; i++) { %>
-                <span class="star <%= i <= review.review_rating ? 'filled' : '' %>">★</span>
+      <div class="carousel-nav">
+        <button class="carousel-btn" id="prevBtn">&#8592;</button>
+        <span class="carousel-counter" id="carouselCounter"></span>
+        <button class="carousel-btn" id="nextBtn">&#8594;</button>
+      </div>
+      <div class="carousel-track-wrapper">
+        <div class="carousel-track">
+          <% reviews.forEach(function(review) { %>
+            <!-- DEBUG: review.account_id: <%= review.account_id %> -->
+            <div class="review-card">
+              <div class="review-stars" data-rating="<%= review.review_rating %>"></div>
+              <p class="review-text">"<%= review.review_text %>"</p>
+              <p class="review-author">— <%= review.account_firstname %> <%= review.account_lastname %></p>
+              <% if (locals.loggedin && locals.accountData.account_id == review.account_id) { %>
+                <form action="/inv/review/delete" method="post">
+                  <input type="hidden" name="review_id" value="<%= review.review_id %>">
+                  <input type="hidden" name="inv_id" value="<%= inv_id %>">
+                  <button type="submit" class="delete-review-btn">Delete my review</button>
+                </form>
               <% } %>
             </div>
-            <p class="review-text">"<%= review.review_text %>"</p>
-            <p class="review-author">— <%= review.account_firstname %> <%= review.account_lastname %></p>
-          </div>
-        <% }) %>
+          <% }) %>
+        </div>
       </div>
     </div>
   <% } else { %>
@@ -30,21 +41,26 @@
     <div class="review-form">
       <h3>Leave a Review</h3>
       <%- messages() %>
+      <% if (locals.loggedin) { %>
+        <!-- DEBUG: account_id from JWT: <%= locals.accountData.account_id %> -->
+      <% } %>
       <form action="/inv/review" method="post" novalidate>
         <input type="hidden" name="inv_id" value="<%= inv_id %>">
 
-        <label for="review_rating">Rating</label>
-        <div class="star-select">
-          <% for(let i = 1; i <= 5; i++) { %>
-            <input type="radio" name="review_rating" id="star<%= i %>" value="<%= i %>" required>
-            <label for="star<%= i %>" class="star-label">★</label>
-          <% } %>
+        <label>Rating</label>
+        <div class="star-select" id="starSelect">
+          <span class="star-input" data-value="1">★</span>
+          <span class="star-input" data-value="2">★</span>
+          <span class="star-input" data-value="3">★</span>
+          <span class="star-input" data-value="4">★</span>
+          <span class="star-input" data-value="5">★</span>
         </div>
+        <input type="hidden" name="review_rating" id="review_rating" required>
 
         <label for="review_text">Your Review</label>
         <textarea name="review_text" id="review_text" rows="4" required placeholder="Write your review here..."></textarea>
 
-        <button type="submit">Submit Review</button>
+        <button type="submit" id="submitReview">Submit Review</button>
       </form>
     </div>
   <% } else { %>
@@ -56,36 +72,90 @@
 </div>
 
 <script>
+  // Render stars from data-rating attribute
+  document.querySelectorAll(".review-stars").forEach(function(el) {
+    const rating = parseInt(el.getAttribute("data-rating"))
+    let html = ""
+    for (let i = 1; i <= 5; i++) {
+      html += `<span class="star ${i <= rating ? 'filled' : ''}">★</span>`
+    }
+    el.innerHTML = html
+  })
+
+  // Star selector for form
+  const starInputs = document.querySelectorAll(".star-input")
+  const ratingInput = document.getElementById("review_rating")
+
+  if (starInputs.length) {
+    starInputs.forEach(function(star) {
+      star.addEventListener("click", function() {
+        const val = parseInt(this.getAttribute("data-value"))
+        ratingInput.value = val
+        starInputs.forEach(function(s) {
+          s.classList.toggle("active", parseInt(s.getAttribute("data-value")) <= val)
+        })
+      })
+      star.addEventListener("mouseenter", function() {
+        const val = parseInt(this.getAttribute("data-value"))
+        starInputs.forEach(function(s) {
+          s.classList.toggle("hover", parseInt(s.getAttribute("data-value")) <= val)
+        })
+      })
+      star.addEventListener("mouseleave", function() {
+        starInputs.forEach(function(s) { s.classList.remove("hover") })
+      })
+    })
+  }
+
+  // Carousel
   const track = document.querySelector(".carousel-track")
-  if (track && track.children.length > 1) {
+  if (track && track.children.length > 0) {
     let current = 0
     const cards = track.children
+    const total = cards.length
     let timer
+    const counter = document.getElementById("carouselCounter")
+
+    function updateCounter() {
+      if (counter) counter.textContent = `${current + 1} / ${total}`
+    }
 
     function goTo(index) {
       track.style.transition = "transform 0.6s ease"
       track.style.transform = `translateX(-${index * 100}%)`
       current = index
+      updateCounter()
     }
 
     function next() {
-      const nextIndex = (current + 1) % cards.length
-      goTo(nextIndex)
+      goTo((current + 1) % total)
+    }
+
+    function prev() {
+      goTo((current - 1 + total) % total)
     }
 
     function startTimer() {
-      timer = setInterval(next, 4000)
+      if (total > 1) timer = setInterval(next, 4000)
     }
 
     function stopTimer() {
       clearInterval(timer)
     }
 
+    document.getElementById("nextBtn").addEventListener("click", function() {
+      stopTimer(); next(); startTimer()
+    })
+    document.getElementById("prevBtn").addEventListener("click", function() {
+      stopTimer(); prev(); startTimer()
+    })
+
     track.addEventListener("mouseenter", stopTimer)
     track.addEventListener("mouseleave", startTimer)
     track.addEventListener("touchstart", stopTimer)
     track.addEventListener("touchend", startTimer)
 
+    updateCounter()
     startTimer()
   }
 </script>

@@ -109,4 +109,11 @@ router.post(
   utilities.handleErrors(invController.addReview)
 )
 
+// Delete Review (POST)
+router.post(
+  "/review/delete",
+  utilities.requireLogin,
+  utilities.handleErrors(invController.deleteReview)
+)
+
 module.exports = router

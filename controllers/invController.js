@@ -336,4 +336,22 @@ invCont.deleteInventory = async function (req, res, next) {
   }
 }
 
+/* ***************************
+ *  Delete Review
+ * ************************** */
+invCont.deleteReview = async function (req, res, next) {
+  try {
+    const review_id = parseInt(req.body.review_id)
+    const inv_id = parseInt(req.body.inv_id)
+    const account_id = res.locals.accountData.account_id
+
+    await invModel.deleteReview(review_id, account_id)
+
+    req.flash("notice", "Your review was deleted.")
+    res.redirect(`/inv/detail/${inv_id}`)
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = invCont
